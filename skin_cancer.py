@@ -1,39 +1,4 @@
 #****************************#phase 1************************#
-import numpy as np
-import skfuzzy as fuzz
-import cv2
-
-image = cv2.imread(
-    r"C:\Users\asims\Desktop\hackathon\skin_cancer_8\melanoma\w (32).jpg")
-
-grayScale_img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
-cluster = 3
-
-data = grayScale_img.reshape((-1, 1))
-
-alpha = 0.4
-beta = 0.9
-
-m = 2
-
-cntr, u, u0, d, jm, p, fpc = fuzz.cluster.cmeans(
-    data.T, cluster, m, error=0.005, maxiter=1000)
-
-rough_set_matrix = (u ** alpha) * (1 - beta * (1 - u) ** m)
-
-cluster_membership = np.argmax(rough_set_matrix, axis=0)
-
-segmented_image = cluster_membership.reshape(grayScale_img.shape)
-
-segmented_image_uint8 = (segmented_image * 255 /
-                         segmented_image.max()).astype(np.uint8)
-
-output_path = r"C:\Users\asims\Desktop\img\segmented_imagev.png"
-cv2.imwrite(output_path, segmented_image_uint8)
-# print(f'Segmented image saved to {output_path}')
-
-#****************************#phase 2************************#
 
 import os
 import cv2
